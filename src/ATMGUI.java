@@ -39,10 +39,10 @@ public class ATMGUI extends JFrame {
         }
     };
     private Card card = new Card();
-    private ATM atm = new ATM(card, new CurrencyConverter());
+    private ATM atm = new ATM(card);
 
     private void setupFrame() {
-        setTitle("Bankomat");
+        setTitle("JavaATM");
         Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icon.png"));
         setIconImage(icon);
         setSize(1280, 720);
@@ -53,7 +53,7 @@ public class ATMGUI extends JFrame {
         setResizable(false);
     }
 
-    private JPanel createStartScreen() {
+    private JPanel startScreen() {
         // Ekran startowy (włóź kartę, stwórz kartę)
         JPanel startScreen = new JPanel();
         startScreen.setLayout(new BoxLayout(startScreen, BoxLayout.Y_AXIS));
@@ -74,7 +74,7 @@ public class ATMGUI extends JFrame {
                     card = card.readCard(selectedFile.getName().replace(".ser", ""));
                     if (card.getCardExpiryDateAsDate().isAfter(LocalDate.now())) {
                         cards.add(optionsScreen(), OPTIONS_SCREEN);
-                        cards.add(createPinScreen(), PIN_SCREEN);
+                        cards.add(pinScreen(), PIN_SCREEN);
                         cardLayout.show(cards, "pinScreen");
                         System.out.println("Wczytano kartę: " + card.getCardHolderName() + " " + card.getCardHolderSurname());
                         System.out.println("Typ karty: " + card.getCardType());
@@ -91,7 +91,7 @@ public class ATMGUI extends JFrame {
         createCardButton.setPreferredSize(new Dimension(200, 50)); // Increase button size
         createCardButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Center button
         createCardButton.addActionListener(e -> {
-            cards.add(createCreateCardScreen(), CREATE_CARD_SCREEN);
+            cards.add(createCardScreen(), CREATE_CARD_SCREEN);
             cardLayout.show(cards, "createCard");
         });
         startScreen.add(Box.createRigidArea(new Dimension(0, 20)));
@@ -101,7 +101,7 @@ public class ATMGUI extends JFrame {
         return startScreen;
     } //OK
 
-    private JPanel createCreateCardScreen() {
+    private JPanel createCardScreen() {
         // Ekran tworzenia karty
         JPanel createCard = new JPanel();
         createCard.setLayout(new BoxLayout(createCard, BoxLayout.Y_AXIS));
@@ -210,7 +210,7 @@ public class ATMGUI extends JFrame {
         return container;
     } //OK
 
-    private JPanel createPinScreen() {
+    private JPanel pinScreen() {
         // Ekran wpisywania kodu PIN
         JPanel pinScreen = new JPanel();
         pinScreen.setLayout(new BoxLayout(pinScreen, BoxLayout.Y_AXIS));
@@ -304,7 +304,7 @@ public class ATMGUI extends JFrame {
         expiryDateLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         expiryDateLabel.setForeground(Color.WHITE);
         expiryDateLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        if (card.getCardType() == false) {
+        if (!card.getCardType()) {
             expiryDateLabel.setText("Karta obca - niektóre funkcje mogą byc niedostępne");
         }
         JLabel chooseLabel = new JLabel("Wybierz jedną z opcji dostępnych na ekranie");
@@ -333,7 +333,7 @@ public class ATMGUI extends JFrame {
         rightPanel.add(currentTimeButton);
         rightPanel.add(backButton);
 
-        if (card.getCardType() == false) {
+        if (!card.getCardType()) {
             exchangeRatesButton.setEnabled(false);
             convertCurrencyButton.setEnabled(false);
             changePinButton.setEnabled(false);
@@ -785,7 +785,7 @@ public class ATMGUI extends JFrame {
         //card.setCardType(true);
         setupFrame();
         add(cards);
-        cards.add(createStartScreen(), START_SCREEN);
+        cards.add(startScreen(), START_SCREEN);
         setVisible(true);
     }
 }
