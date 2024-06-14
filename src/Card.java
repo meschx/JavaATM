@@ -2,6 +2,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
 
 public class Card implements Serializable {
 
@@ -15,6 +16,68 @@ public class Card implements Serializable {
     private double balanceUSD; // saldo w USD
     private double balanceEUR; // saldo w EUR
     private double balanceCZK; // saldo w CZK
+
+    // Settery
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public String generateCardNumber() {
+        Random random = new Random();
+        StringBuilder cardNumber = new StringBuilder();
+
+        for (int i = 0; i < 16; i++) {
+            int digit = random.nextInt(10); // Generate a random digit between 0 and 9
+            cardNumber.append(digit);
+        }
+        return cardNumber.toString();
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
+    }
+
+    public void setCardHolderName(String cardHolderName) {
+        this.cardHolderName = cardHolderName;
+    }
+
+    public void setCardHolderSurname(String cardHolderSurname) {
+        this.cardHolderSurname = cardHolderSurname;
+    }
+
+    public void setCardType(Boolean cardType) {
+        this.cardType = cardType;
+    }
+
+    public void setCardExpiryDate(String cardExpiryDate) {
+        this.cardExpiryDate = cardExpiryDate;
+    }
+
+    public void setCardExpiryDate() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate expiryDate = currentDate.plusYears(3);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yy");
+        this.cardExpiryDate = expiryDate.format(formatter);
+    }
+
+    public void setBalance(String currency, double amount) {
+        switch (currency) {
+            case "PLN":
+                this.balancePLN = amount;
+                break;
+            case "USD":
+                this.balanceUSD = amount;
+                break;
+            case "EUR":
+                this.balanceEUR = amount;
+                break;
+            case "CZK":
+                this.balanceCZK = amount;
+                break;
+            default:
+                break;
+        }
+    }
 
     // Gettery
     public String getCardNumber() {
@@ -45,20 +108,19 @@ public class Card implements Serializable {
         return cardExpiryDate;
     }
 
-    public double getBalancePLN() {
-        return balancePLN;
-    }
-
-    public double getBalanceUSD() {
-        return balanceUSD;
-    }
-
-    public double getBalanceEUR() {
-        return balanceEUR;
-    }
-
-    public double getBalanceCZK() {
-        return balanceCZK;
+    public double getBalance(String currency) {
+        switch (currency) {
+            case "PLN":
+                return this.balancePLN;
+            case "USD":
+                return this.balanceUSD;
+            case "EUR":
+                return this.balanceEUR;
+            case "CZK":
+                return this.balanceCZK;
+            default:
+                return 0;
+        }
     }
 
     public LocalDate getCardExpiryDateAsDate() {
@@ -92,7 +154,7 @@ public class Card implements Serializable {
         }
     }
 
-    public static void main(String[] args) {
+//    public static void main(String[] args) {
 //        Card card = new Card();
 //        card.cardNumber = "1234567890123456";
 //        card.pin = "1234";
@@ -113,16 +175,15 @@ public class Card implements Serializable {
 //        } catch (IOException e) {
 //            System.out.println("Wystąpił błąd podczas zapisywania karty: " + e.getMessage());
 //        }
-
-        Card card = new Card();
-        Card card2 = new Card();
-        try {
-
-            card = card.readCard("1234567890123456");
-            System.out.println("Wczytano kartę: " + card.getCardHolderName() + " " + card.getCardHolderSurname());
-            System.out.println("Saldo w PLN: " + card.getBalancePLN());
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Wystąpił błąd podczas wczytywania karty: " + e.getMessage());
-        }
-    }
+//
+//        Card card2 = new Card();
+//        try {
+//
+//            card = card.readCard("1234567890123456");
+//            System.out.println("Wczytano kartę: " + card.getCardHolderName() + " " + card.getCardHolderSurname());
+//            System.out.println("Saldo w PLN: " + card.getBalance("PLN"));
+//        } catch (IOException | ClassNotFoundException e) {
+//            System.out.println("Wystąpił błąd podczas wczytywania karty: " + e.getMessage());
+//        }
+//    }
 }
