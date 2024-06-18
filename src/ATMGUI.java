@@ -668,7 +668,6 @@ public class ATMGUI extends JFrame {
     }
 
     public ATMGUI() {
-        //card.setCardType(true);
         setupFrame();
         add(cards);
         cards.add(startScreen(), START_SCREEN);
