@@ -22,16 +22,13 @@ public class ATMGUI extends JFrame {
 
     private CardLayout cardLayout = new CardLayout();
     private JPanel cards = new JPanel(cardLayout) {
-        // Override paintComponent to draw the background image
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             try {
                 Image backgroundImage = ImageIO.read(getClass().getResource("/background3.png"));
-                // Calculate the center point
                 int x = (getWidth() - backgroundImage.getWidth(null)) / 2;
                 int y = (getHeight() - backgroundImage.getHeight(null)) / 2;
-                // Draw the image at the center point
                 g.drawImage(backgroundImage, x, y, this);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -40,6 +37,13 @@ public class ATMGUI extends JFrame {
     };
     private Card card = new Card();
     private ATM atm = new ATM(card);
+
+    private JButton addButton(String text) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("Arial", Font.PLAIN, 20));
+        button.setPreferredSize(new Dimension(200, 50));
+        return button;
+    }
 
     private void setupFrame() {
         setTitle("JavaATM");
@@ -54,7 +58,6 @@ public class ATMGUI extends JFrame {
     }
 
     private JPanel startScreen() {
-        // Ekran startowy (włóź kartę, stwórz kartę)
         JPanel startScreen = new JPanel();
         startScreen.setLayout(new BoxLayout(startScreen, BoxLayout.Y_AXIS));
         startScreen.setOpaque(false);
@@ -65,7 +68,7 @@ public class ATMGUI extends JFrame {
         insertCardButton.setFont(new Font("Arial", Font.PLAIN, 20)); // Increase font size
         insertCardButton.setPreferredSize(new Dimension(200, 50)); // Increase button size
         insertCardButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Center button
-        insertCardButton.addActionListener(e -> {
+        insertCardButton.addActionListener(_ -> {
             JFileChooser fileChooser = new JFileChooser();
             int returnValue = fileChooser.showOpenDialog(null);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -90,7 +93,7 @@ public class ATMGUI extends JFrame {
         createCardButton.setFont(new Font("Arial", Font.PLAIN, 20)); // Increase font size
         createCardButton.setPreferredSize(new Dimension(200, 50)); // Increase button size
         createCardButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Center button
-        createCardButton.addActionListener(e -> {
+        createCardButton.addActionListener(_ -> {
             cards.add(createCardScreen(), CREATE_CARD_SCREEN);
             cardLayout.show(cards, "createCard");
         });
@@ -102,7 +105,6 @@ public class ATMGUI extends JFrame {
     } //OK
 
     private JPanel createCardScreen() {
-        // Ekran tworzenia karty
         JPanel createCard = new JPanel();
         createCard.setLayout(new BoxLayout(createCard, BoxLayout.Y_AXIS));
         createCard.setOpaque(false);
@@ -156,7 +158,7 @@ public class ATMGUI extends JFrame {
         cardTypeCheckBox.setForeground(Color.WHITE);
         cardTypeCheckBox.setAlignmentX(Component.CENTER_ALIGNMENT);
         cardTypeCheckBox.setOpaque(false);
-        cardTypeCheckBox.addActionListener(e -> {
+        cardTypeCheckBox.addActionListener(_ -> {
             card.setCardType(cardTypeCheckBox.isSelected());
             System.out.println(cardTypeCheckBox.isSelected());
         });
@@ -169,14 +171,14 @@ public class ATMGUI extends JFrame {
 
         JButton backButton = new JButton("Wstecz");
         backButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        backButton.addActionListener(e -> {
+        backButton.addActionListener(_ -> {
             cardLayout.show(cards, "startScreen");
         });
         buttonPanel.add(backButton);
 
         JButton createCardButton2 = new JButton("Stwórz kartę");
         createCardButton2.setFont(new Font("Arial", Font.PLAIN, 20));
-        createCardButton2.addActionListener(e -> {
+        createCardButton2.addActionListener(_ -> {
             String name = cardHolderNameField.getText();
             String surname = cardHolderSurnameField.getText();
             String pin = new String(pinField.getPassword());
@@ -211,7 +213,6 @@ public class ATMGUI extends JFrame {
     } //OK
 
     private JPanel pinScreen() {
-        // Ekran wpisywania kodu PIN
         JPanel pinScreen = new JPanel();
         pinScreen.setLayout(new BoxLayout(pinScreen, BoxLayout.Y_AXIS));
         pinScreen.setOpaque(false);
@@ -237,18 +238,19 @@ public class ATMGUI extends JFrame {
 
         JButton backButton2 = new JButton("Wstecz");
         backButton2.setFont(new Font("Arial", Font.PLAIN, 20));
-        backButton2.addActionListener(e -> {
+        backButton2.addActionListener(_ -> {
             cardLayout.show(cards, "startScreen");
         });
         JButton acceptButton = new JButton("Zatwierdź");
         acceptButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        acceptButton.addActionListener(e -> {
+        acceptButton.addActionListener(_ -> {
             String pin = new String(pinField2.getPassword());
             if (card.getPin().equals(pin)) {
                 cardLayout.show(cards, "optionsScreen");
             } else {
                 JOptionPane.showMessageDialog(null, "Nieprawidłowy kod PIN!");
             }
+            pinField2.setText("");
         });
         buttonPanel2.add(backButton2);
         buttonPanel2.add(acceptButton);
@@ -343,34 +345,33 @@ public class ATMGUI extends JFrame {
         optionsScreen.add(rightPanel, BorderLayout.EAST);
         optionsScreen.add(centerPanel, BorderLayout.CENTER);
 
-        // Dodajemy akcje dla przycisków
-        withdrawButton.addActionListener(e -> {
+        withdrawButton.addActionListener(_ -> {
             cardLayout.show(cards, "withdrawScreen");
         });
 
-        depositButton.addActionListener(e -> {
+        depositButton.addActionListener(_ -> {
             cardLayout.show(cards, "depositScreen");
         });
 
-        checkBalanceButton.addActionListener(e -> {
+        checkBalanceButton.addActionListener(_ -> {
             cards.add(checkBalanceScreen(), CHECK_BALANCE_SCREEN);
             cardLayout.show(cards, "checkBalanceScreen");
         });
 
-        exchangeRatesButton.addActionListener(e -> {
+        exchangeRatesButton.addActionListener(_ -> {
             cardLayout.show(cards, "currencyRatesScreen");
         });
 
-        convertCurrencyButton.addActionListener(e -> {
+        convertCurrencyButton.addActionListener(_ -> {
             cardLayout.show(cards, "currencyExchangeScreen");
         });
 
-        changePinButton.addActionListener(e -> {
+        changePinButton.addActionListener(_ -> {
             cards.add(changePinScreen(), CHANGE_PIN_SCREEN);
             cardLayout.show(cards, "changePinScreen");
         });
 
-        backButton.addActionListener(e -> {
+        backButton.addActionListener(_ -> {
             // Zapisanie karty po przeprowadzonych transakcjach
             try {
                 card.saveCard();
@@ -436,7 +437,7 @@ public class ATMGUI extends JFrame {
 
         JButton backButton = new JButton("Wstecz");
         backButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        backButton.addActionListener(e -> {
+        backButton.addActionListener(_ -> {
             cardLayout.show(cards, "optionsScreen");
         });
         buttonPanel.add(backButton);
@@ -479,17 +480,20 @@ public class ATMGUI extends JFrame {
 
         JButton backButton = new JButton("Wstecz");
         backButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        backButton.addActionListener(e -> {
+        backButton.addActionListener(_ -> {
             cardLayout.show(cards, "optionsScreen");
         });
         buttonPanel.add(backButton);
 
         JButton withdrawButton = new JButton("Wypłać");
         withdrawButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        withdrawButton.addActionListener(e -> {
+        withdrawButton.addActionListener(_ -> {
             double amount = Double.parseDouble(amountField.getText());
-            atm.withdrawCash(amount);
-            cardLayout.show(cards, "optionsScreen");
+            boolean flag = atm.withdrawCash(amount);
+            if (flag) {
+                cardLayout.show(cards, "optionsScreen");
+            }
+            amountField.setText("");
         });
         buttonPanel.add(withdrawButton);
 
@@ -531,16 +535,20 @@ public class ATMGUI extends JFrame {
 
         JButton backButton = new JButton("Wstecz");
         backButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        backButton.addActionListener(e -> {
+        backButton.addActionListener(_ -> {
             cardLayout.show(cards, "optionsScreen");
         });
         buttonPanel.add(backButton);
 
         JButton depositButton = new JButton("Wpłać");
         depositButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        depositButton.addActionListener(e -> {
+        depositButton.addActionListener(_ -> {
             double amount = Double.parseDouble(amountField.getText());
-            atm.depositCash(amount);
+            boolean flag = atm.depositCash(amount);
+            if (flag) {
+                cardLayout.show(cards, "optionsScreen");
+            }
+            amountField.setText("");
         });
         buttonPanel.add(depositButton);
 
@@ -602,7 +610,7 @@ public class ATMGUI extends JFrame {
 
         JButton backButton = new JButton("Wstecz");
         backButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        backButton.addActionListener(e -> {
+        backButton.addActionListener(_ -> {
             cardLayout.show(cards, "optionsScreen");
             cardLayout.removeLayoutComponent(checkBalanceScreen);
         });
@@ -673,18 +681,21 @@ public class ATMGUI extends JFrame {
 
         JButton backButton = new JButton("Wstecz");
         backButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        backButton.addActionListener(e -> {
+        backButton.addActionListener(_ -> {
             cardLayout.show(cards, "optionsScreen");
         });
         buttonPanel.add(backButton);
 
         JButton changePinButton = new JButton("Zmień PIN");
         changePinButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        changePinButton.addActionListener(e -> {
+        changePinButton.addActionListener(_ -> {
             String currentPin = new String(currentPinField.getPassword());
             String newPin = new String(newPinField.getPassword());
             String confirmPin = new String(confirmPinField.getPassword());
-            atm.changePin(currentPin, newPin, confirmPin);
+            boolean flag = atm.changePin(currentPin, newPin, confirmPin);
+            if (flag) {
+                cardLayout.show(cards, "optionsScreen");
+            }
         });
         buttonPanel.add(changePinButton);
 
@@ -752,19 +763,22 @@ public class ATMGUI extends JFrame {
 
         JButton backButton = new JButton("Wstecz");
         backButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        backButton.addActionListener(e -> {
+        backButton.addActionListener(_ -> {
             cardLayout.show(cards, "optionsScreen");
         });
         buttonPanel.add(backButton);
 
         JButton exchangeButton = new JButton("Przewalutuj");
         exchangeButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        exchangeButton.addActionListener(e -> {
+        exchangeButton.addActionListener(_ -> {
             try {
                 double amount = Double.parseDouble(amountField.getText());
                 String sourceCurrency = (String) sourceCurrencyField.getSelectedItem();
                 String targetCurrency = (String) targetCurrencyField.getSelectedItem();
-                atm.exchangeCurrency(amount, sourceCurrency, targetCurrency);
+                boolean flag = atm.exchangeCurrency(amount, sourceCurrency, targetCurrency);
+                if (flag) {
+                    cardLayout.show(cards, "optionsScreen");
+                }
             } catch (Exception exception) {
                 JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas przewalutowania.");
             }
