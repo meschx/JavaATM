@@ -63,7 +63,7 @@ public class ATM {
         if (sourceCurrency.equals("PLN")) {
             exchangeRate = CurrencyConverter.getExchangeRate(targetCurrency);
             double convertedAmount = Math.round((amount / exchangeRate) * 100.0) / 100.0;
-            if (card.getBalance(sourceCurrency) >= amount) {
+            if (card.getBalance(sourceCurrency) >= amount && amount > 0) {
                 card.setBalance(sourceCurrency, Math.round((card.getBalance(sourceCurrency) - amount) * 100.0) / 100.0);
                 card.setBalance(targetCurrency, Math.round((card.getBalance(targetCurrency) + convertedAmount) * 100.0) / 100.0);
                 JOptionPane.showMessageDialog(null, "Przewalutowano " + amount + " " + sourceCurrency + " na " + convertedAmount + " " + targetCurrency + ".");
@@ -75,7 +75,7 @@ public class ATM {
         } else if (targetCurrency.equals("PLN")) {
             exchangeRate = CurrencyConverter.getExchangeRate(sourceCurrency);
             double convertedAmount = Math.round((amount * exchangeRate) * 100.0) / 100.0;
-            if (card.getBalance(sourceCurrency) >= amount) {
+            if (card.getBalance(sourceCurrency) >= amount && amount > 0) {
                 card.setBalance(sourceCurrency, Math.round((card.getBalance(sourceCurrency) - amount) * 100.0) / 100.0);
                 card.setBalance("PLN", Math.round((card.getBalance("PLN") + convertedAmount) * 100.0) / 100.0);
                 JOptionPane.showMessageDialog(null, "Przewalutowano " + amount + " " + sourceCurrency + " na " + convertedAmount + " PLN.");
