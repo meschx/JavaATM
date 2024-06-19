@@ -655,6 +655,7 @@ public class ATMGUI extends JFrame {
                 if (flag) {
                     cardLayout.show(cards, "optionsScreen");
                 }
+                amountField.setText("");
             } catch (Exception exception) {
                 JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas przewalutowania.");
             }
