@@ -33,7 +33,7 @@ public class CurrencyConverter {
         JSONArray rates = json.getJSONArray("rates");
         double exchangeRate = rates.getJSONObject(0).getDouble("mid");
 
-        return exchangeRate;
+        return Math.round(exchangeRate*100.00)/100.0;
     }
 
 }
