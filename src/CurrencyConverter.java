@@ -1,10 +1,11 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URI;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.net.URL;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 public class CurrencyConverter {
 
@@ -13,27 +14,23 @@ public class CurrencyConverter {
             return 1.0;
         }
 
-        URI uri = new URI("https://api.nbp.pl/api/exchangerates/rates/a/" + currencyCode + "/");
+        URI uri = new URI("https://api.nbp.pl/api/exchangerates/rates/a/" + currencyCode + "/?format=xml");
         URL url = uri.toURL();
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String inputLine;
-        StringBuilder content = new StringBuilder();
-        while ((inputLine = in.readLine()) != null) {
-            content.append(inputLine);
-        }
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        InputStream inputStream = connection.getInputStream();
+        Document doc = db.parse(inputStream);
 
-        in.close();
+        NodeList nodeList = doc.getElementsByTagName("Mid");
+        double exchangeRate = Double.parseDouble(nodeList.item(0).getTextContent());
+
+        inputStream.close();
         connection.disconnect();
-
-        JSONObject json = new JSONObject(content.toString());
-        JSONArray rates = json.getJSONArray("rates");
-        double exchangeRate = rates.getJSONObject(0).getDouble("mid");
 
         return Math.round(exchangeRate*100.00)/100.0;
     }
-
 }

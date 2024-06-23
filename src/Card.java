@@ -17,7 +17,6 @@ public class Card implements Serializable {
     private double balanceEUR; // saldo w EUR
     private double balanceCZK; // saldo w CZK
 
-    // Settery
     public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
     }

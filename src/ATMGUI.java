@@ -113,21 +113,21 @@ public class ATMGUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
-    }
+    } //ustawienia okna
 
     private JPanel buttonPanelSetup() {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         return buttonPanel;
-    }
+    } //panel dla przyciskow
 
     private JPanel containerSetup(JPanel panel) {
         JPanel container = new JPanel(new GridBagLayout());
         container.setOpaque(false);
         container.add(panel, new GridBagConstraints());
         return container;
-    }
+    } //kontener dla panelu
 
     //=====================================
 
@@ -168,7 +168,7 @@ public class ATMGUI extends JFrame {
 
         startScreen.add(Box.createVerticalGlue());
         return startScreen;
-    }
+    } //ekran startowy
 
     private JPanel cardScreen() {
         JPanel createCard = panelSetup();
@@ -232,6 +232,7 @@ public class ATMGUI extends JFrame {
                 card.setCardExpiryDate();
                 try {
                     card.saveCard();
+                    JOptionPane.showMessageDialog(null, "Karta została stworzona. Jej numer to: " + card.getCardNumber() + ".");
                     cardLayout.show(cards, "startScreen");
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -244,7 +245,7 @@ public class ATMGUI extends JFrame {
         createCard.add(Box.createVerticalGlue());
 
         return containerSetup(createCard);
-    }
+    } //ekran tworzenia karty
 
     private JPanel pinScreen() {
         JPanel pinScreen = panelSetup();
@@ -280,7 +281,7 @@ public class ATMGUI extends JFrame {
         pinScreen.add(Box.createVerticalGlue());
 
         return containerSetup(pinScreen);
-    }
+    } //ekran wpisywania pinu
 
     private JPanel optionsScreen() {
         JPanel optionsScreen = new JPanel();
@@ -378,7 +379,7 @@ public class ATMGUI extends JFrame {
         });
 
         return optionsScreen;
-    }
+    } //ekran z opcjami
 
     private JPanel currencyRatesScreen() {
         JPanel currencyRatesScreen = panelSetup();
@@ -423,7 +424,7 @@ public class ATMGUI extends JFrame {
         currencyRatesScreen.add(Box.createVerticalGlue());
 
         return containerSetup(currencyRatesScreen);
-    }
+    } //ekran z kursami walut
 
     private JPanel withdrawScreen() {
         JPanel withdrawScreen = panelSetup();
@@ -465,7 +466,7 @@ public class ATMGUI extends JFrame {
         withdrawScreen.add(Box.createVerticalGlue());
 
         return containerSetup(withdrawScreen);
-    }
+    } //ekran wypłaty
 
     private JPanel depositScreen() {
         JPanel depositScreen = panelSetup();
@@ -507,7 +508,7 @@ public class ATMGUI extends JFrame {
         depositScreen.add(Box.createVerticalGlue());
 
         return containerSetup(depositScreen);
-    }
+    } //ekran wpłaty
 
     private JPanel checkBalanceScreen() {
         JPanel checkBalanceScreen = panelSetup();
@@ -548,7 +549,7 @@ public class ATMGUI extends JFrame {
         checkBalanceScreen.add(Box.createVerticalGlue());
 
         return containerSetup(checkBalanceScreen);
-    }
+    } //ekran sprawdzenia salda
 
     private JPanel changePinScreen() {
         JPanel changePinScreen = panelSetup();
@@ -604,7 +605,7 @@ public class ATMGUI extends JFrame {
         changePinScreen.add(Box.createVerticalGlue());
 
         return containerSetup(changePinScreen);
-    }
+    } //ekran zmiany pinu
 
     private JPanel currencyExchangeScreen() {
         JPanel currencyExchangeScreen = panelSetup();
@@ -666,12 +667,12 @@ public class ATMGUI extends JFrame {
         currencyExchangeScreen.add(Box.createVerticalGlue());
 
         return containerSetup(currencyExchangeScreen);
-    }
+    } //ekran przewalutowania
 
     public ATMGUI() {
         setupFrame();
         add(cards);
         cards.add(startScreen(), START_SCREEN);
         setVisible(true);
-    }
+    } //inicjalizacja okna
 }
